@@ -1,0 +1,17 @@
+{
+  "development": {
+    "database": "aae_dev",
+    "host": "127.0.0.1",
+    "dialect": "postgres"
+  },
+  "test": {
+    "database": "aae_test",
+    "host": "127.0.0.1",
+    "dialect": "postgres"
+  },
+  "production": {
+    "database": "aae_prod",
+    "host": "127.0.0.1",
+    "dialect": "postgres"
+  }
+}
