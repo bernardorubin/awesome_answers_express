@@ -1,0 +1,58 @@
+post method
+
+
+
+sequelize model:create --name Answer --attributes content:text,QuestionId:integer
+
+edit migration
+
+sequelize db:migrate
+
+psql -d aae_dev
+\dt
+SELECT * FROM "Answers"
+
+
+setup association in our model
+models answer.js
+          Answer.belongsTo(models.Question);
+
+
+questions model
+          Question.hasMany(models.Answer);
+
+
+in psql >>> Not!!!!!!!! ❌
+
+let d = require('./models/index')
+
+d.Question.findOne().then(q => console.info(q))
+d.Question.findOne().then(q => q.getAnswers())
+
+
+edit routes
+add form
+
+yarn start
+
+yarn add method-override
+
+sequelize db:migrate:undo
+sequelize db:migrate
+
+
+app.js
+  add method override stuff
+    app.use(methodOverride('X-HTTP-Method'));          // Microsoft
+    app.use(methodOverride('X-HTTP-Method-Override')); // Google/GData
+    app.use(methodOverride('X-Method-Override'));      // IBM
+
+
+edit routes
+
+router.delete('/:id', function (req, res, next) {
+
+})
+
+
+in questions index add delete method form action

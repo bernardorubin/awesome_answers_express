@@ -1,0 +1,25 @@
+<%- include('../partials/header.ejs')  %>
+    <h1>Questions</h1>
+    <ul>
+      <%# questions.forEach(question => { %>
+      <%# in the foreach callback we destructured the question object
+      we expect it to have an id, title and createdAt property.
+      With desctructuring these will be assigned to variables with respective names  %>
+      <% questions.forEach(({id,title,createdAt}) => { %>
+        <li>
+            <h3><a href="/questions/<%= id %>"><%= title %></a></h3>
+            <p><%= createdAt %></p>
+            <%# To create a delete button, we must make use of a form.
+            According to how we implement our method-override, we expect there
+            to be a _method param with our HTTP Verb. We use an hidden input fields
+            to set it. %>
+
+            <form action="/questions/<%= id %>" method="post">
+              <input type="hidden" name="_method" value="delete"/>
+              <input type="submit" value="Delete" />
+            </form>
+        </li>
+      <% }) %>
+    </ul>
+    <p>Welcome to Awesome Answers Express</p>
+<%- include('../partials/footer.ejs') %>
