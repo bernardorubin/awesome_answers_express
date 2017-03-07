@@ -11,7 +11,7 @@ const {Question, Answer} = require('../models/index')
 
 // PATH /questions/new METHOD: get
 router.get('/new', function(req, res, next) {
-  res.render('questions/new')
+  res.render('questions/new', {question: Question.build()})
 });
 
 // Answers#create
@@ -72,6 +72,29 @@ router.delete('/:id', function (req, res, next) {
     .then(question => question.destroy())
     .then(() => res.redirect(`/questions`))
     .catch(err => next(err));
+})
+
+// Questions#edit
+// PATH /questions/:id/edit METHOD: get
+router.get('/:id/edit', function (req, res, next) {
+  const {id} = req.params;
+  Question
+    .findById(id)
+    .then(question => res.render('questions/edit', {question}))
+    .catch(err => next(err))
+})
+
+// Question#update
+// PATH /questions/:id Method: patch
+router.patch('/:id', function (req, res, next) {
+  const {id} = req.params;
+  const {title, content} = req.body;
+
+  Question
+    .findById(id)
+    .then(question => question.update({title, content}))
+    .then(() => res.redirect(`/questions/${id}`))
+    .catch(err => next(err))
 })
 
 // Questions#show
