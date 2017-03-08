@@ -5,6 +5,8 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 const methodOverride = require('method-override');
+const session = require('express-session');
+const flash = require('connect-flash');
 
 var index = require('./routes/index');
 var users = require('./routes/users');
@@ -12,7 +14,8 @@ var users = require('./routes/users');
 // into a variable with the require function
 // to load one of your own file modules, give require
 // the relative path to the file 👇
-var questions = require('./routes/questions');
+const questions = require('./routes/questions');
+const answers = require('./routes/answers');
 
 var app = express();
 
@@ -47,7 +50,11 @@ app.use(methodOverride(function (req, res) {
   }
 }))
 
-app.use(cookieParser());
+app.use(cookieParser('awesome-answers-express'));
+app.use(session({cookie: {maxAge: 60000}}));
+app.use(flash());
+
+
 // 👇 will transpile our scss files into css files
 app.use(require('node-sass-middleware')({
   src: path.join(__dirname, 'public'),
@@ -57,12 +64,20 @@ app.use(require('node-sass-middleware')({
 }));
 app.use(express.static(path.join(__dirname, 'public')));
 
+// create our own middleware
+app.use(function (req, res, next) {
+  res.locals.notice || (res.locals.notice = '');
+  res.locals.alert || (res.locals.alert = '');
+  next();
+});
+
 app.use('/', index);
 app.use('/users', users);
 // app.use
 // - first argument: beginning url for routes
 // - second argument: middleware (or, router) object
 app.use('/questions', questions);
+app.use('/answers', answers);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

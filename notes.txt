@@ -1,7 +1,5 @@
 post method
 
-
-
 sequelize model:create --name Answer --attributes content:text,QuestionId:integer
 
 edit migration
@@ -22,12 +20,11 @@ questions model
           Question.hasMany(models.Answer);
 
 
-in psql >>> Not!!!!!!!! ❌
+in psql >>> Not!!!!!!!! ❌ -> how did we do this?
+    let d = require('./models/index')
 
-let d = require('./models/index')
-
-d.Question.findOne().then(q => console.info(q))
-d.Question.findOne().then(q => q.getAnswers())
+    d.Question.findOne().then(q => console.info(q))
+    d.Question.findOne().then(q => q.getAnswers())
 
 
 edit routes
@@ -56,3 +53,12 @@ router.delete('/:id', function (req, res, next) {
 
 
 in questions index add delete method form action
+
+duplicate questions routes file
+require answers in app.js
+
+edit routes, app and shows
+
+yarn add express session
+yarn add connect-flash
+require it in app

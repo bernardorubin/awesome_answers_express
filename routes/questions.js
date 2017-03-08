@@ -37,7 +37,10 @@ router.post('/', function(req, res, next) {
     // all sequelize modles have a .create method that takes an object
     // that represent the attributes of the model instance to be created
     // redirect to the showpage of that question
-    .then(question => res.redirect(`/questions/${question.id}`))
+    .then(question => {
+      req.flash('notice', `Questions #${question.id} created!`);
+      res.redirect(`/questions/${question.id}`);
+    })
     // next is a function passed to this callback that will
     // make the next middleware handle the request
     .catch(err => next(err))
@@ -101,6 +104,7 @@ router.patch('/:id', function (req, res, next) {
 // PATH /questions/:id METHOD: Get
 router.get('/:id', function(req,res,next) {
   const {id} = req.params;
+  res.locals.notice = req.flash('notice') || '';
   // .findById is a asynchronous method that queries the database which
   // means that it returns a promise. To the get the resolved value of the promise,
   // we use its .then method and pass it a callback
